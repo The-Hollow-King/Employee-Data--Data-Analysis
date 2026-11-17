@@ -27,18 +27,37 @@ ag_dis = age_dis["Employee_ID"].count() #Stores the amount of employees in each 
 max_group = ag_dis.max() #stores the value of the age group with the most employees
 
 avg_sal = data["Salary"].mean()
-#Average salary across all departments
-for name, group in dept:
-    print(f"--- {name} Department Salaries ---")
-    print(group["Salary"].mean())
-
 
 #providing the output after doing some EDA
 #Employee Data
-# print("Average age of employee : ", mean_age)
-# print("The age distribution : ", ag_dis)
-# print("The age group with the most employees : ", max_group, '-', "32 y.o")
-# print("Employees in each department \n", dept["Employee_ID"].count())
+print("Average age of employee : ", mean_age)
+print("The age distribution : ", ag_dis)
+print("The age group with the most employees : ", max_group, '-', "32 y.o")
+print("Employees in each department \n", dept["Employee_ID"].count())
 
-#Salary analysis
+# #Salary analysis
 print("Average salary : ", avg_sal)
+dept_avg_sal = data.groupby("Department")["Salary"].mean() #average salaray across department
+print(dept_avg_sal)
+salary_stats = data.groupby(["Department", "Region"])["Salary"].agg(["mean", "median", "min", "max", "count"])
+print(salary_stats)
+
+#visualising the data
+plt.hist(data["Age"], bins = 5, edgecolor= "black")
+plt.axvline(mean_age, color='red', linestyle='dashed', linewidth=2, label=f'Mean: {mean_age:.2f}')
+plt.title("Age Distribution")
+plt.xlabel("Age")
+plt.ylabel("No. of employees")
+
+plt.show()
+
+
+plt.hist(dept_avg_sal, edgecolor='black', bins = 6)
+plt.axvline(avg_sal, color='red', linestyle='dashed', linewidth=2, label=f'Mean: {avg_sal:.2f}')
+plt.title("Average Salary by Department")
+plt.xlabel("Department")
+plt.ylabel("Average Salary")
+plt.xticks(rotation=0)
+plt.show()
+
+plt.show()
